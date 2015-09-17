@@ -8,10 +8,13 @@ Xmx="2G"
 #歡迎畫面
 function welcome() {
 	print "================================"
-	print "|        普 羅 米 修 斯        |"
+	print "|                              |"
+	print "|      - 普 羅 米 修 斯 -      |"
 	print "|    spigot 伺服器安裝程式     |"
+	print "|                              |"
 	print "================================"
-	print "|   v2.0.2.150918 工程組專用   |"
+	print "|         v2.0.3.150918        |"
+	print "|      技術提供 by  工程組     |"
 	print "================================"
 	print
 }
@@ -47,7 +50,7 @@ function ram() {
 
 # 安裝 java
 function install_java() {
-	wget -O jre.tar.gz
+	wget http://prometheus.lfh.tw/dl/jdk.tar.gz -O jre.tar.gz
 	if [[ ! -f jre.tar.gz ]]; then
 		print "*** 錯誤：jre.tar.gz 不存在，無法安裝！ ***"
 		exit
