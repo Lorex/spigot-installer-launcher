@@ -1,0 +1,85 @@
+#!/bin/zsh
+
+
+# 變數
+Xms="2G"
+Xmx="2G"
+
+#歡迎畫面
+function welcome() {
+	print "================================"
+	print "|        普 羅 米 修 斯        |"
+	print "|    spigot 伺服器安裝程式     |"
+	print "================================"
+	print "|   v2.0.2.150918 工程組專用   |"
+	print "================================"
+	print
+}
+
+# 說明頁面
+function help() {
+	echo '參數列表: '
+	echo '  --start		啟動伺服器'
+	echo '  --help		顯示參數列表'
+	echo '  --install-java	安裝 Java Server JRE 1.8'
+	echo '  --ram=<min>-<max>	設定記憶體使用量'
+	echo
+	echo '開啟伺服器: ./server --start'
+}
+
+# 啟動伺服器
+function server_start() {
+	if [[ ! -f server.jar ]]; then
+		print "*** 錯誤: server.jar 不存在!!! ***"
+		exit
+	fi
+	java -Xms$Xms -Xmx$Xmx -server -d64 -jar server.jar
+}
+
+# 設定記憶體大小
+function ram() {
+	Xms=$(echo $1 | sed 's/.*\=\(.*\)-.*/\1/')
+	Xmx=$(echo $1 | sed 's/.*-\(.*\)/\1/')
+	if [[ $Xms = "--ram=" ]]; then Xms=1G fi
+	if [[ $Xmx = "ram=" ]]; then Xmx=1G fi
+	echo 將記憶體使用量設定為 $Xms 至 $Xmx
+}
+
+# 安裝 java
+function install_java() {
+	wget -O jre.tar.gz
+	if [[ ! -f jre.tar.gz ]]; then
+		print "*** 錯誤：jre.tar.gz 不存在，無法安裝！ ***"
+		exit
+	fi
+	tar -zxvf jdk.tar.gz
+	sudo mkdir /usr/java
+	sudo cp jdk1.8.0_60 /usr/java/latest -R
+	sudo alternatives --install /usr/bin/java java /usr/java/latest/bin/java 1
+
+	sudo sed -i '$a JAVA_HOME=/usr/java/latest' /etc/profile
+	sudo sed -i '$a CLASSPATH=$JAVA_HOME/lib:$JAVA_HOME/jre/lib' /etc/profile
+	sudo sed -i '$a PATH=$PATH:$JAVA_HOME/bin:$JAVA_HOME/jre/bin' /etc/profile
+	sudo sed -i '$a export PATH CLASSPATH JAVA_HOME' /etc/profile
+	sudo source /etc/profile
+}
+
+
+clear
+welcome
+# 參數管理
+if [[ $# = 0 ]]; then
+	help
+	exit
+fi
+while [[ $# != 0 ]]; do
+#	echo $1
+	case $1 in
+		--start ) server_start ;;
+		--help ) help ;;
+		--ram=* ) ram $1;;
+		--install-java ) install_java ;;
+		* ) help ;;
+	esac
+	shift
+done
