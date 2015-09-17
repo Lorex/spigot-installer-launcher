@@ -14,4 +14,4 @@
 
 ## 範例
 - 開啟伺服器 : ```./server --start```
-- 開啟伺服器並設定記憶體使用量為 1G 至 2G : ```2./server --ram=1G-2G --start
+- 開啟伺服器並設定記憶體使用量為 1G 至 2G : ```./server --ram=1G-2G --start```
