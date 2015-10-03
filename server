@@ -50,8 +50,8 @@ function ram() {
 
 # 安裝 java
 function install_java() {
-	wget http://prometheus.lfh.tw/dl/jdk.tar.gz -O jre.tar.gz
-	if [[ ! -f jre.tar.gz ]]; then
+	wget http://prometheus.lfh.tw/dl/jdk.tar.gz -O jdk.tar.gz
+	if [[ ! -f jdk.tar.gz ]]; then
 		print "*** 錯誤：jre.tar.gz 不存在，無法安裝！ ***"
 		exit
 	fi
